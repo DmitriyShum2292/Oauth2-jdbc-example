@@ -5,11 +5,13 @@ import com.oauth.oauthjdbc.entity.User;
 import com.oauth.oauthjdbc.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
+
 
 import java.time.LocalDateTime;
 
@@ -19,7 +21,8 @@ import java.time.LocalDateTime;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.cors();
+        http.csrf().disable()
                 .antMatcher("/**").authorizeRequests()
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
@@ -50,4 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return userRepository.save(user);
         };
     }
+
+
 }
